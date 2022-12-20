@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-service
+  namespace: otus-msa-hw8
+  labels:
+    app: payment-service
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: payment-service
+  template:
+    metadata:
+      labels:
+        app: payment-service
+    spec:
+      containers:
+        - name: payment-service
+          image: 34234247632/payment-service:v1.0
+          imagePullPolicy: IfNotPresent
+          command: ["/app/service"]
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /probe/live
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /probe/ready
+              port: http
+          envFrom:
+            - configMapRef:
+                name: payment-config
+            - secretRef:
+                name: payment-secrets
+      initContainers:
+        - name: migrate
+          image: 34234247632/payment-service:v1.0
+          imagePullPolicy: IfNotPresent
+          command: ["/entrypoint-migrate.sh"]
+          envFrom:
+            - configMapRef:
+                name: payment-config
+            - secretRef:
+                name: payment-secrets
