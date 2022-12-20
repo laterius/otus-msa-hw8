@@ -14,3 +14,8 @@
 1. Запуск приложения **make k8s-deploy**
 3. Запуск выполнения коллекции postman **make newman**
 3. Удаление используемых ресурсов **make k8s-remove**
+4. В случаи необходимости команды для получения адресов сервисов
+    - order minikube service -n otus-msa-hw8 --url order-service
+    - storage minikube service -n otus-msa-hw8 --url storage-service
+    - delivery minikube service -n otus-msa-hw8 --url delivery-service
+    - payment minikube service -n otus-msa-hw8 --url payment-service

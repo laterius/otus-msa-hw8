@@ -1,0 +1,391 @@
+{
+	"info": {
+		"_postman_id": "f7723be1-aa8c-411f-bd9b-1725fb50da5e",
+		"name": "order-saga",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8551747"
+	},
+	"item": [
+		{
+			"name": "Create order (success)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"order creation\", () => {",
+							"    pm.response.to.have.status(200);",
+							"    const orderId = pm.response.json().data.order_id",
+							"    pm.expect(orderId).not.empty",
+							"    pm.collectionVariables.set(\"orderId\", orderId)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"goods\": [\n        {\n            \"id\": \"497a545c-24df-4f9c-aab3-5a779c76a4f0\",\n            \"amount\": 200\n        },\n        {\n            \"id\": \"6b1641ae-3f10-4f4d-86a1-789731f24710\",\n            \"amount\": 100\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://arch.homework:32262/order",
+					"protocol": "http",
+					"host": [
+						"arch",
+						"homework"
+					],
+					"port": "32262",
+					"path": [
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get goods reservation (success)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"goods reserved\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{storageUrl}}/reserveGoods/{{orderId}}",
+					"host": [
+						"{{storageUrl}}"
+					],
+					"path": [
+						"reserveGoods",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get courier reeservation (success)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"courier reservation found\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{deliveryUrl}}/reserveCourier/{{orderId}}",
+					"host": [
+						"{{deliveryUrl}}"
+					],
+					"path": [
+						"reserveCourier",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get payment (success)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"payment found\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{paymentUrl}}/payment/{{orderId}}",
+					"host": [
+						"{{paymentUrl}}"
+					],
+					"path": [
+						"payment",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get order (success)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"order found\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{orderUrl}}/order/{{orderId}}",
+					"host": [
+						"{{orderUrl}}"
+					],
+					"path": [
+						"order",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create order (failed)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"order not created\", () => {",
+							"    pm.response.to.have.status(500);",
+							"    const orderId = pm.response.json().data.order_id",
+							"    pm.expect(orderId).not.empty",
+							"    pm.collectionVariables.set(\"orderId\", orderId)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"goods\": [\n        {\n            \"id\": \"497a545c-24df-4f9c-aab3-5a779c76a4f0\",\n            \"amount\": 200\n        },\n        {\n            \"id\": \"6b1641ae-3f10-4f4d-86a1-789731f24710\",\n            \"amount\": 1000\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{orderUrl}}/order",
+					"host": [
+						"{{orderUrl}}"
+					],
+					"path": [
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get goods reservation (failed)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"goods reservation canceled\", () => {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{storageUrl}}/reserveGoods/{{orderId}}",
+					"host": [
+						"{{storageUrl}}"
+					],
+					"path": [
+						"reserveGoods",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get courier reeservation (failed)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"courier reservation canceled\", () => {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{deliveryUrl}}/reserveCourier/{{orderId}}",
+					"host": [
+						"{{deliveryUrl}}"
+					],
+					"path": [
+						"reserveCourier",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get payment (failed)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"payment canceled\", () => {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{paymentUrl}}/payment/{{orderId}}",
+					"host": [
+						"{{paymentUrl}}"
+					],
+					"path": [
+						"payment",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get order (failed)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"order canceled\", () => {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{orderUrl}}/order/{{orderId}}",
+					"host": [
+						"{{orderUrl}}"
+					],
+					"path": [
+						"order",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "orderId",
+			"value": ""
+		},
+		{
+			"key": "orderUrl",
+			"value": "http://arch.homework",
+			"type": "string"
+		},
+		{
+			"key": "storageUrl",
+			"value": "http://arch.homework",
+			"type": "string"
+		},
+		{
+			"key": "deliveryUrl",
+			"value": "http://arch.homework",
+			"type": "string"
+		},
+		{
+			"key": "paymentUrl",
+			"value": "http://arch.homework",
+			"type": "string"
+		}
+	]
+}
